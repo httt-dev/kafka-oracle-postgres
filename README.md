@@ -2,9 +2,11 @@ https://debezium.io/releases/2.7/#installation
 
 
 Linux:
+```
     export DOCKER_HOST_IP=$(ifconfig | grep 'inet ' | grep -v 127.0.0.1 | awk '{print $2}')
-
+```
 Windows :
+```bat
     $env:DOCKER_HOST_IP = (
         Get-NetIPConfiguration |
         Where-Object {
@@ -16,7 +18,7 @@ Windows :
         Select-Object -ExpandProperty IPv4Address
     )
     Write-Output $env:DOCKER_HOST_IP
-
+```
 
 ## Xoa cac data trong folder data
 Remove-Item -Recurse -Force .\data\
