@@ -1,0 +1,41 @@
+{
+  "name": "postgres-sink-init-snapshot",
+  "config": {
+    "connector.class": "io.debezium.connector.jdbc.JdbcSinkConnector",
+    "tasks.max": "1",
+    
+    "topics.regex": "oracle\\.TESTDB\\.(.*)",
+    
+    "connection.url": "jdbc:postgresql://postgres17:5432/testdb",
+    "connection.username": "postgres",
+    "connection.password": "Abc12345",
+    
+    "auto.create": "false",
+    "auto.evolve": "false",
+    "schema.evolution": "none",
+    "insert.mode": "upsert",
+    "primary.key.mode": "record_key",
+    "delete.enabled": "true",
+    "table.name.format": "${topic}",
+    "quote.sql.identifiers": "never",
+    "schema.enable": "true",
+    
+    "transforms": "unwrap,route,dropUnavailable",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "false",
+    "transforms.unwrap.delete.handling.mode": "none",  
+    "transforms.route.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.route.regex": "oracle\\.TESTDB\\.(.*)",
+    "transforms.route.replacement": "$1",
+    
+    "transforms.dropUnavailable.type": "com.example.FilterUnavailableColumns",
+    "transforms.dropUnavailable.placeholder.values": "__ORACLE_LOB_UNAVAILABLE__,__debezium_unavailable_value",
+
+    "post.process.delete.handling.mode": "rewrite",
+    "batch.size": "100",
+    "max.retries": "5",
+    "retry.backoff.ms": "5000", 
+
+    "consumer.override.group.id": "connect-sink-jdbc"
+  }
+}
