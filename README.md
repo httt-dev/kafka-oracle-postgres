@@ -1,5 +1,6 @@
 https://debezium.io/releases/2.7/#installation
 
+https://debezium.io/releases/3.1/
 
 Linux:
 ```
@@ -47,11 +48,18 @@ curl -X POST http://localhost:8083/connectors   -H "Content-Type: application/js
 
 curl.exe -X DELETE http://localhost:8083/connectors/oracle-source-init-snapshot
 
+-- oracle-source-init-otp-snapshot
+curl.exe -X POST http://localhost:8083/connectors   -H "Content-Type: application/json"   -d "@connectors\oracle-source-init-otp-snapshot.json"
+curl.exe -X DELETE http://localhost:8083/connectors/oracle-source-init-otp-snapshot
 
 ### postgres connector
 curl.exe -X POST http://localhost:8083/connectors  -H "Content-Type: application/json"   -d "@connectors\postgres-sink-init-snapshot.json"
 
 curl.exe -X DELETE http://localhost:8083/connectors/postgres-sink-init-snapshot
+
+curl.exe -X POST http://localhost:8083/connectors  -H "Content-Type: application/json"   -d "@connectors\postgres-sink-init-otp-snapshot.json"
+curl.exe -X DELETE http://localhost:8083/connectors/postgres-sink-init-otp-snapshot
+
 
 ## Delete topics
 kafka-topics.sh --bootstrap-server kafka1:9092 --list | grep -v '^__' | xargs -I {} kafka-topics

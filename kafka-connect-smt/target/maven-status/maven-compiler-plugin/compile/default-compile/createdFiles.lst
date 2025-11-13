@@ -1,2 +1,3 @@
 com\example\Filter.class
 com\example\FilterUnavailableColumns.class
+com\example\TableNameToTopic.class

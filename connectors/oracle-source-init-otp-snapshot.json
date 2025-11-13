@@ -1,0 +1,41 @@
+ {
+  "name": "oracle-source-init-snapshot",
+  "config": {
+    "connector.class": "io.debezium.connector.oracle.OracleConnector",
+    "tasks.max": "1",
+
+    "database.hostname": "oracle19c",
+    "database.port": "1521",
+    "database.user": "C##DEBEZIUM_USER",
+    "database.password": "Abc12345",
+    "database.dbname": "CDB$ROOT",
+	  "database.pdb.name": "ORCLPDB1",
+    "database.url": "jdbc:oracle:thin:@oracle19c:1521/ORCLPDB1",
+    "topic.prefix": "oracle",
+    "database.server.name": "oracle-test",
+
+    "schema.include.list": "TESTDB",
+    "table.include.list": "TESTDB.PRODUCT",
+
+    "transforms": "route",
+    "transforms.route.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.route.regex": "([^.]+)\\.([^.]+)\\.([^.]+)",
+    "transforms.route.replacement": "cdc-all-tables",
+
+    "schema.history.internal.kafka.bootstrap.servers": "kafka1:9092,kafka2:9093,kafka3:9094",
+    "schema.history.internal.kafka.topic": "schema-changes.oracle-test",
+    
+    "snapshot.mode": "initial",
+    "log.mining.strategy": "online_catalog",
+    "tombstones.on.delete": "false",
+    "internal.log.mining.read.only": "true",
+	  "database.connection.adapter": "logminer",
+    "time.precision.mode": "adaptive_time_microseconds",
+    "decimal.handling.mode": "precise",
+    "lob.enabled": "true",
+    "include.unchanged.lobs": "false",
+    "oracle.jdbc.lob.enable.streaming": "true",
+    "unavailable.value.placeholder": "__ORACLE_LOB_UNAVAILABLE__"
+
+  }
+}

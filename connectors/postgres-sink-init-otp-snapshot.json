@@ -1,0 +1,41 @@
+{
+  "name": "postgres-sink-init-snapshot",
+  "config": {
+    "connector.class": "io.debezium.connector.jdbc.JdbcSinkConnector",
+    "tasks.max": "1",
+    
+    "topics.regex": "cdc-all-tables",
+    
+    "connection.url": "jdbc:postgresql://postgres17:5432/testdb",
+    "connection.username": "postgres",
+    "connection.password": "Abc12345",
+    
+    "auto.create": "false",
+    "auto.evolve": "false",
+    "schema.evolution": "none",
+    "insert.mode": "upsert",
+    "primary.key.mode": "record_key",
+    "delete.enabled": "true",
+    
+    "quote.sql.identifiers": "never",
+    "schema.enable": "true",
+
+
+    "transforms": "routeByTable,unwrap",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "false",
+    "transforms.unwrap.delete.handling.mode": "rewrite",
+    
+    "transforms.routeByTable.type": "com.example.TableNameToTopic",
+
+    "table.name.format": "${topic}",  
+
+
+    "post.process.delete.handling.mode": "rewrite",
+    "batch.size": "100",
+    "max.retries": "5",
+    "retry.backoff.ms": "5000", 
+
+    "consumer.override.group.id": "connect-sink-jdbc"
+  }
+}
